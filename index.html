@@ -519,45 +519,54 @@
     #captcha-section {
       border: 1px solid #008800;
       background: #001100;
-      padding: 20px 24px;
+      padding: 16px 24px;
       margin-bottom: 30px;
     }
-    #captcha-section .section-header { margin-bottom: 14px; }
-    #captcha-challenge {
+    #captcha-section .section-header { margin-bottom: 12px; }
+    #captcha-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    #captcha-left {
+      flex: 0 0 auto;
       background: #002200;
       border: 1px solid #004400;
-      padding: 14px;
-      margin-bottom: 14px;
-      font-size: 16px;
-      line-height: 2;
-      color: #00cc00;
+      padding: 10px 18px;
+      text-align: center;
+    }
+    #captcha-label {
+      font-size: 14px;
+      color: #008800;
+      margin-bottom: 4px;
     }
     #captcha-challenge .captcha-img {
-      font-size: 32px;
-      letter-spacing: 8px;
+      font-size: 28px;
+      letter-spacing: 6px;
       color: #00ff00;
       display: block;
-      text-align: center;
-      margin: 8px 0;
-      /* deliberate chaos */
       filter: blur(0.5px);
       transform: skewX(-4deg);
       text-shadow: 2px 0 #ff000044, -2px 0 #0000ff44;
       font-style: italic;
     }
-    #captcha-options { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    #captcha-note { font-size: 11px; color: #555; margin-top: 4px; }
+    #captcha-right { flex: 1; min-width: 200px; }
+    #captcha-prompt { font-size: 15px; color: #00cc00; margin-bottom: 10px; }
+    #captcha-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
     .captcha-btn {
       background: #001100;
       color: #00ff00;
       border: 1px solid #004400;
       font-family: inherit;
       font-size: 15px;
-      padding: 6px 14px;
+      padding: 5px 12px;
       cursor: pointer;
       letter-spacing: 1px;
     }
     .captcha-btn:hover { background: #002200; border-color: #00ff00; }
-    #captcha-result { font-size: 18px; min-height: 28px; letter-spacing: 1px; }
+    #captcha-result { font-size: 15px; min-height: 22px; letter-spacing: 1px; }
     #captcha-result.fail { color: #ff4444; }
     #captcha-result.pass { color: #00ff00; }
 
@@ -711,13 +720,18 @@
     <!-- CAPTCHA -->
     <div id="captcha-section">
       <div class="section-header">[ SECURITY VERIFICATION — PROVE YOU ARE HUMAN ]</div>
-      <div id="captcha-challenge">
-        <span>Please identify all images containing a <strong id="captcha-target" style="color:#ffff00"></strong>:</span>
-        <span class="captcha-img" id="captcha-display"></span>
-        <span style="font-size:13px;color:#555">Note: This text has not been tampered with in any way.</span>
+      <div id="captcha-inner">
+        <div id="captcha-left">
+          <div id="captcha-label">IDENTIFY IMAGE</div>
+          <div id="captcha-challenge"><span class="captcha-img" id="captcha-display"></span></div>
+          <div id="captcha-note">image may contain artifacts</div>
+        </div>
+        <div id="captcha-right">
+          <div id="captcha-prompt">Select all squares containing a <strong id="captcha-target" style="color:#ffff00"></strong>:</div>
+          <div id="captcha-options"></div>
+          <div id="captcha-result"></div>
+        </div>
       </div>
-      <div id="captcha-options"></div>
-      <div id="captcha-result"></div>
     </div>
 
     <hr class="divider">
@@ -1152,11 +1166,11 @@
     } else if (correct && captchaAttempts <= 2) {
       result.textContent = currentCaptcha.failMsg + ' (We moved the goalposts.)';
       result.className = 'captcha-result fail';
-      setTimeout(initCaptcha, 1500);
+      setTimeout(initCaptcha, 3500);
     } else {
       result.textContent = currentCaptcha.failMsg;
       result.className = 'captcha-result fail';
-      setTimeout(initCaptcha, 1500);
+      setTimeout(initCaptcha, 3500);
     }
   }
 
