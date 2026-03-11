@@ -1166,11 +1166,11 @@
     } else if (correct && captchaAttempts <= 2) {
       result.textContent = currentCaptcha.failMsg + ' (We moved the goalposts.)';
       result.className = 'captcha-result fail';
-      setTimeout(initCaptcha, 1500);
+      setTimeout(initCaptcha, 3500);
     } else {
       result.textContent = currentCaptcha.failMsg;
       result.className = 'captcha-result fail';
-      setTimeout(initCaptcha, 1500);
+      setTimeout(initCaptcha, 3500);
     }
   }
 
