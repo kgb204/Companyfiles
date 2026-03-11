@@ -364,6 +364,68 @@
       from { background-position: 0 0; }
       to   { background-position: 28px 0; }
     }
+
+    /* Shoveling man scene */
+    .construction-scene {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 36px;
+      padding: 10px 0 4px;
+    }
+    .construction-sign-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .construction-sign {
+      width: 90px;
+      height: 90px;
+      background: #ffaa00;
+      transform: rotate(45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 4px solid #cc6600;
+      flex-shrink: 0;
+    }
+    .sign-inner {
+      transform: rotate(-45deg);
+      color: #000;
+      font-family: 'VT323', monospace;
+      font-size: 12px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+    .sign-pole {
+      width: 5px;
+      height: 40px;
+      background: #886600;
+      margin: 0 auto;
+    }
+    .sign-base {
+      width: 40px;
+      height: 5px;
+      background: #886600;
+    }
+    #shovel-man {
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      color: #ffaa00;
+      line-height: 1.25;
+      text-align: left;
+      white-space: pre;
+      min-width: 110px;
+      min-height: 90px;
+    }
+    .dirt-pile {
+      font-size: 20px;
+      letter-spacing: -4px;
+      color: #886600;
+      line-height: 1;
+    }
     .under-construction-msg {
       color: #ffaa00;
       font-size: 15px;
@@ -785,7 +847,20 @@
     <!-- UNDER CONSTRUCTION -->
     <div id="construction-section">
       <div class="stripes"></div>
-      <div class="construction-title">UNDER CONSTRUCTION</div>
+      <div class="construction-title">⚠ UNDER CONSTRUCTION ⚠</div>
+      <div class="construction-scene">
+        <div class="construction-sign-wrap">
+          <div class="construction-sign">
+            <div class="sign-inner">HARD<br>HAT<br>AREA</div>
+          </div>
+          <div class="sign-pole"></div>
+          <div class="sign-base"></div>
+        </div>
+        <pre id="shovel-man"></pre>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end">
+          <div class="dirt-pile" id="dirt-pile">▄▄▄</div>
+        </div>
+      </div>
       <div class="construction-sub">
         This section is pending review. A ticket has been filed. The ticket was filed in 2019.
       </div>
@@ -1265,6 +1340,35 @@
       terminalPrint('err', '(Dave wrote this shell. Dave is not a programmer.)');
     }
   });
+
+  // ===== SHOVELING MAN ANIMATION =====
+  (function() {
+    // 6 frames: raise shovel → dig → scoop → lift → throw → reset
+    const frames = [
+      // frame 0: standing, shovel over shoulder
+      "  \\O/  \n   |  7\n  / \\  \n       ",
+      // frame 1: leaning forward, shovel going down
+      "   O   \n  /|-7 \n  / \\  \n       ",
+      // frame 2: bent, shovel hitting dirt
+      "   O   \n  /|   \n  / \\-7\n  ____/",
+      // frame 3: scooping, knees bent
+      "   O   \n  \\|   \n  /|  7\n _/____",
+      // frame 4: lifting dirt
+      "  .O   \n * |   \n  /|  7\n  / \\ _",
+      // frame 5: throwing dirt up
+      " . O.  \n  /|*  \n  | .  \n  / \\  ",
+    ];
+    const dirtStates = ["▄▄▄", "▄▄▄▄", "▄▄▄▄▄", "▄▄▄▄▄▄", "▄▄▄▄▄", "▄▄▄▄"];
+    const el = document.getElementById('shovel-man');
+    const dirtEl = document.getElementById('dirt-pile');
+    if (!el) return;
+    let f = 0;
+    setInterval(function() {
+      el.textContent = frames[f % frames.length];
+      if (dirtEl) dirtEl.textContent = dirtStates[f % dirtStates.length];
+      f++;
+    }, 180);
+  })();
 </script>
 </body>
 </html>
