@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMPANYFILES.ZIP — SECURE PORTAL</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      color: #00ff00;
+      font-family: 'VT323', 'Courier New', monospace;
+      font-size: 18px;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Screen flicker */
+    @keyframes flicker {
+      0%   { opacity: 1; }
+      92%  { opacity: 1; }
+      93%  { opacity: 0.85; }
+      94%  { opacity: 1; }
+      96%  { opacity: 0.9; }
+      100% { opacity: 1; }
+    }
+    body { animation: flicker 8s infinite; }
+
+    /* Blink */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    .blink { animation: blink 1s step-start infinite; }
+
+    /* Glitch header */
+    @keyframes glitch {
+      0%   { text-shadow: 2px 0 #ff0000, -2px 0 #0000ff; }
+      20%  { text-shadow: -2px 0 #ff0000,  2px 0 #0000ff; }
+      40%  { text-shadow: 2px 2px #ff0000, -2px -2px #0000ff; }
+      60%  { text-shadow: none; }
+      80%  { text-shadow: -3px 0 #ff0000, 3px 0 #0000ff; }
+      100% { text-shadow: 2px 0 #ff0000, -2px 0 #0000ff; }
+    }
+    .glitch {
+      animation: glitch 3s infinite;
+      color: #00ff00;
+    }
+
+    /* Progress bar fill */
+    @keyframes fill-bar {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+
+    /* Layout */
+    #boot-screen {
+      padding: 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #boot-lines { line-height: 2; }
+    #boot-lines p { white-space: pre; }
+
+    .progress-wrap {
+      display: inline-block;
+      width: 200px;
+      border: 1px solid #00ff00;
+      height: 14px;
+      vertical-align: middle;
+      margin: 0 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #00ff00;
+      width: 0;
+    }
+
+    /* Main content — hidden until boot done */
+    #main {
+      display: none;
+      padding: 20px 40px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    #ascii-logo {
+      color: #00ff00;
+      font-size: 14px;
+      line-height: 1.2;
+      white-space: pre;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 48px;
+      letter-spacing: 4px;
+      margin-bottom: 4px;
+    }
+
+    .tagline {
+      color: #00cc00;
+      font-size: 20px;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #00ff00;
+      margin: 20px 0;
+      opacity: 0.4;
+    }
+
+    .section-header {
+      color: #00ff00;
+      font-size: 22px;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    /* Directory listing */
+    .dir-listing {
+      border: 1px solid #004400;
+      background: #001100;
+      padding: 16px 20px;
+      line-height: 1.8;
+      margin-bottom: 30px;
+      overflow-x: auto;
+    }
+    .dir-listing .row {
+      display: flex;
+      gap: 16px;
+      white-space: nowrap;
+      font-size: 16px;
+    }
+    .dir-listing .row .perms  { color: #008800; min-width: 110px; }
+    .dir-listing .row .size   { color: #00aa00; min-width: 80px; text-align: right; }
+    .dir-listing .row .date   { color: #007700; min-width: 120px; }
+    .dir-listing .row .name   { color: #00ff00; }
+    .dir-listing .row .name.danger { color: #ff4444; }
+    .dir-listing .row .name.highlight { color: #ffff00; font-weight: bold; }
+    .dir-listing .row .name a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .dir-listing .row .name a:hover { text-decoration: underline; }
+
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      padding: 1px 8px;
+      font-size: 14px;
+      border: 1px solid currentColor;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .badge.ok   { color: #00ff00; }
+    .badge.warn { color: #ffaa00; }
+    .badge.evil { color: #ff0000; }
+
+    /* Footer */
+    #footer {
+      text-align: center;
+      padding: 40px;
+      color: #008800;
+      font-size: 20px;
+      letter-spacing: 3px;
+    }
+
+    /* Warning box */
+    .warning-box {
+      border: 1px solid #ffaa00;
+      color: #ffaa00;
+      padding: 12px 20px;
+      margin-bottom: 24px;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+    .warning-box .w-title {
+      color: #ffff00;
+      font-size: 20px;
+      letter-spacing: 2px;
+    }
+
+    /* Visitor counter */
+    .counter-row {
+      color: #006600;
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+    .counter-num { color: #00ff00; }
+  </style>
+</head>
+<body>
+
+<!-- BOOT SCREEN -->
+<div id="boot-screen">
+  <div id="boot-lines"></div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+  <pre id="ascii-logo">
+   ██████╗ ██████╗ ███╗   ███╗██████╗  █████╗ ███╗   ██╗██╗   ██╗
+  ██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔══██╗████╗  ██║╚██╗ ██╔╝
+  ██║     ██║   ██║██╔████╔██║██████╔╝███████║██╔██╗ ██║ ╚████╔╝
+  ██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██╔══██║██║╚██╗██║  ╚██╔╝
+  ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ██║  ██║██║ ╚████║   ██║
+   ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝
+                      F I L E S . Z I P
+  </pre>
+
+  <h1 class="glitch">COMPANYFILES.ZIP</h1>
+  <div class="tagline">// WHERE THE FILES ARE DEFINITELY LEGAL //</div>
+
+  <div class="counter-row">
+    VISITORS SINCE 1997: <span class="counter-num" id="visitor-counter">0</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    CURRENTLY WATCHING YOU: <span class="counter-num">1</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    THREAT LEVEL: <span style="color:#ff4444">EXTREMELY BUSINESS</span>
+  </div>
+
+  <div class="warning-box">
+    <div class="w-title">⚠ NOTICE TO ALL EMPLOYEES ⚠</div><br>
+    This portal is <strong>100% monitored</strong> by our crack team of cybersecurity professionals
+    (Dave from IT and his nephew who "knows computers"). Any unauthorised access will be met with
+    a strongly-worded email and a passive-aggressive Slack message.
+    <br><br>
+    By proceeding you agree that you have read our 847-page Terms of Service, our Privacy Policy,
+    our Cookie Policy, our Cookie Policy Amendment (2019), our Cookie Policy Amendment Retraction (2020),
+    and the handwritten note taped to the break room microwave.
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-header">[ ROOT DIRECTORY LISTING ] — /var/company/definitely-real-files/</div>
+  <div class="dir-listing">
+    <div class="row"><span class="perms">-rwxrwxrwx</span><span class="size">4.0K</span><span class="date">Jan 01 1970</span><span class="name">.</span></div>
+    <div class="row"><span class="perms">-rwxrwxrwx</span><span class="size">4.0K</span><span class="date">Jan 01 1970</span><span class="name">..</span></div>
+    <div class="row"><span class="perms">-rw-r--r--</span><span class="size">69.4G</span><span class="date">Mar 03 2024</span><span class="name danger">TOTALLY_NOT_SUSPICIOUS.exe <span class="badge evil">VIRUS PROBABLY</span></span></div>
+    <div class="row"><span class="perms">-rw-------</span><span class="size">2.1K</span><span class="date">Feb 14 2023</span><span class="name danger">passwords_real_final_FINAL_v3_USE_THIS_ONE.txt <span class="badge warn">SENSITIVE</span></span></div>
+    <div class="row"><span class="perms">-rw-r--r--</span><span class="size">1.1M</span><span class="date">Dec 25 2022</span><span class="name">CEO_dance_videos_DO_NOT_OPEN.zip</span></div>
+    <div class="row"><span class="perms">-rw-r--r--</span><span class="size">0B</span><span class="date">Nov 05 2021</span><span class="name">synergy_deliverables_q4_v2_REVISED_FINAL2.pptx</span></div>
+    <div class="row"><span class="perms">-rw-r--r--</span><span class="size">512B</span><span class="date">Oct 31 2019</span><span class="name">IMPORTANT_READ_IMMEDIATELY.txt.exe.docx</span></div>
+    <div class="row"><span class="perms">drwxr-xr-x</span><span class="size">—</span><span class="date">Jan 01 1970</span><span class="name">blockchain_ai_cloud_pivot_strategy/</span></div>
+    <div class="row"><span class="perms">-rw-r--r--</span><span class="size">847B</span><span class="date">Apr 01 2025</span><span class="name">NOT_a_pyramid_scheme_presentation.pdf</span></div>
+    <div class="row"><span class="perms">-rw-r--r--</span><span class="size">12K</span><span class="date">Jun 06 2024</span><span class="name">meeting_that_could_have_been_an_email.mp4</span></div>
+    <div class="row"><span class="perms">-rwsr-xr-x</span><span class="size">1.3G</span><span class="date">TODAY</span>
+      <span class="name highlight">
+        <a href="#">&#x25ba; COMPANYFILES.ZIP &lt;-- THIS ONE <span class="badge ok">✓ LEGIT</span></a>
+      </span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-header">[ SYSTEM STATUS ]</div>
+  <div class="dir-listing" style="margin-bottom:30px">
+    <div class="row"><span class="perms" style="min-width:260px">MAINFRAME INTEGRITY</span><span class="name" style="color:#00ff00">█████████████████████ 100% <span class="badge ok">NOMINAL</span></span></div>
+    <div class="row"><span class="perms" style="min-width:260px">FIREWALL STATUS</span><span class="name" style="color:#ffaa00">████░░░░░░░░░░░░░░░░░ 19% <span class="badge warn">IT'S FINE</span></span></div>
+    <div class="row"><span class="perms" style="min-width:260px">COFFEE MACHINE UPTIME</span><span class="name" style="color:#00ff00">█████████████████████ 100% <span class="badge ok">CRITICAL</span></span></div>
+    <div class="row"><span class="perms" style="min-width:260px">COMPLIANCE WITH GDPR</span><span class="name" style="color:#ff4444">░░░░░░░░░░░░░░░░░░░░░ 0% <span class="badge evil">OOPS</span></span></div>
+    <div class="row"><span class="perms" style="min-width:260px">EMPLOYEE MORALE</span><span class="name" style="color:#ffaa00">███░░░░░░░░░░░░░░░░░░ 14% <span class="badge warn">PIZZA FRIDAY PENDING</span></span></div>
+    <div class="row"><span class="perms" style="min-width:260px">SYNERGY LEVELS</span><span class="name" style="color:#ff4444">████████████████████████████████ OVER 9000% <span class="badge evil">DANGER</span></span></div>
+  </div>
+
+  <hr class="divider">
+
+  <div id="footer">
+    <div>[ PRESS ANY KEY TO CONTINUE ]<span class="blink">_</span></div>
+    <br>
+    <div style="font-size:13px; color:#004400; letter-spacing:1px;">
+      &copy; 1997-2026 COMPANYFILES.ZIP CORPORATION LLC INC. &bull;
+      Best viewed in Netscape Navigator 4.0 at 800x600 &bull;
+      Member of the Web Ring &bull;
+      IPv6 ready*<br>
+      <span style="font-size:11px;">*We are not IPv6 ready.</span>
+    </div>
+  </div>
+
+</div><!-- /#main -->
+
+<script>
+  // Boot sequence lines
+  const bootLines = [
+    { text: 'COMPANYFILES.ZIP BIOS v1.337 (C)1997 MEGACORP SYSTEMS', delay: 0 },
+    { text: 'CPU: PENTIUM III 450MHz  RAM: 64MB  HDD: 6.4GB', delay: 60 },
+    { text: '', delay: 80 },
+    { text: 'CHECKING MEMORY...', delay: 100 },
+    { text: 'OK (mostly)', delay: 200 },
+    { text: '', delay: 250 },
+    { text: 'LOADING HACKER.SYS.................', delay: 300 },
+    { text: 'LOADING DEFINITELY_LEGAL.DLL.......', delay: 500 },
+    { text: 'LOADING SYNERGY_MODULE.EXE.........', delay: 700 },
+    { text: '', delay: 900 },
+    { text: 'INITIATING SECURE CONNECTION TO COMPANYFILES.ZIP...', delay: 1000 },
+    { text: 'BYPASSING FIREWALL...', delay: 1300, progressBar: true },
+    { text: 'ENCRYPTING YOUR DATA (OPTIONAL)...', delay: 2200 },
+    { text: 'PERFORMING VIGOROUS HANDSHAKE......', delay: 2500 },
+    { text: 'ESTABLISHING TRUST (PLEASE HOLD)...', delay: 2700 },
+    { text: '', delay: 2900 },
+    { text: 'SCANNING FOR THREATS...', delay: 3000 },
+    { text: '    > THREATS FOUND: 0 (we checked twice)', delay: 3300 },
+    { text: '    > DEFINITELY NOT WATCHING YOU: TRUE', delay: 3500 },
+    { text: '', delay: 3700 },
+    { text: 'ACCESSING COMPANYFILES.ZIP...', delay: 3900 },
+    { text: '', delay: 4400 },
+    { text: '████████████████████████████████████████', delay: 4500 },
+    { text: '█                                      █', delay: 4520 },
+    { text: '█   *** ACCESS GRANTED ***             █', delay: 4540 },
+    { text: '█   Welcome, valued stakeholder.       █', delay: 4560 },
+    { text: '█   Please do not touch anything.      █', delay: 4580 },
+    { text: '█                                      █', delay: 4600 },
+    { text: '████████████████████████████████████████', delay: 4620 },
+    { text: '', delay: 4700 },
+  ];
+
+  const bootContainer = document.getElementById('boot-lines');
+  let maxDelay = 0;
+
+  bootLines.forEach(line => {
+    if (line.delay > maxDelay) maxDelay = line.delay;
+
+    setTimeout(() => {
+      if (line.progressBar) {
+        const p = document.createElement('p');
+        p.innerHTML = line.text + ' <span class="progress-wrap"><span class="progress-bar" id="pbar"></span></span> ';
+        bootContainer.appendChild(p);
+        setTimeout(() => {
+          const bar = document.getElementById('pbar');
+          if (bar) {
+            bar.style.transition = 'width 0.8s linear';
+            bar.style.width = '100%';
+          }
+          setTimeout(() => {
+            p.innerHTML = line.text + ' [████████████████████] 100% DONE';
+          }, 900);
+        }, 50);
+      } else {
+        const p = document.createElement('p');
+        p.textContent = line.text;
+        bootContainer.appendChild(p);
+      }
+      bootContainer.scrollTop = bootContainer.scrollHeight;
+    }, line.delay);
+  });
+
+  // Show main content after boot
+  setTimeout(() => {
+    document.getElementById('boot-screen').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+
+    // Animate visitor counter
+    let count = 0;
+    const target = 1337420;
+    const el = document.getElementById('visitor-counter');
+    const step = Math.ceil(target / 60);
+    const ticker = setInterval(() => {
+      count = Math.min(count + step, target);
+      el.textContent = count.toLocaleString();
+      if (count >= target) clearInterval(ticker);
+    }, 16);
+  }, maxDelay + 600);
+
+  // "Press any key" does nothing, as is tradition
+  document.addEventListener('keydown', () => {});
+</script>
+</body>
+</html>
