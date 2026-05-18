@@ -1730,24 +1730,40 @@
       document.getElementById('winamp').style.display = 'none';
     });
 
-    // Drag
+    // Drag (mouse + touch)
     const win = document.getElementById('winamp');
     const bar = document.getElementById('winamp-titlebar');
     let dragging = false, ox = 0, oy = 0;
+
+    function wDragStart(cx, cy) {
+      dragging = true;
+      const r = win.getBoundingClientRect();
+      ox = cx - r.left; oy = cy - r.top;
+    }
+    function wDragMove(cx, cy) {
+      if (!dragging) return;
+      win.style.left = (cx - ox) + 'px';
+      win.style.top  = (cy - oy) + 'px';
+      win.style.bottom = 'auto';
+    }
+
     bar.addEventListener('mousedown', function(e) {
       if (e.target.classList.contains('winamp-title-btn')) return;
-      dragging = true;
-      ox = e.clientX - win.getBoundingClientRect().left;
-      oy = e.clientY - win.getBoundingClientRect().top;
-      e.preventDefault();
+      wDragStart(e.clientX, e.clientY); e.preventDefault();
     });
-    document.addEventListener('mousemove', function(e) {
+    bar.addEventListener('touchstart', function(e) {
+      if (e.target.classList.contains('winamp-title-btn')) return;
+      wDragStart(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('mousemove', function(e) { wDragMove(e.clientX, e.clientY); });
+    document.addEventListener('touchmove', function(e) {
       if (!dragging) return;
-      win.style.left = (e.clientX - ox) + 'px';
-      win.style.top  = (e.clientY - oy) + 'px';
-      win.style.bottom = 'auto';
-    });
-    document.addEventListener('mouseup', function() { dragging = false; });
+      wDragMove(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('mouseup',  function() { dragging = false; });
+    document.addEventListener('touchend', function() { dragging = false; });
   })();
 
   // ===== FAKE POPUP ADS =====
@@ -1836,22 +1852,42 @@
       });
     });
 
-    // Drag by titlebar
+    // Drag by titlebar (mouse + touch)
     const titlebar = win.querySelector('.popup-titlebar');
     let dragging = false, ox = 0, oy = 0;
+
+    function dragStart(clientX, clientY) {
+      dragging = true;
+      const r = win.getBoundingClientRect();
+      ox = clientX - r.left;
+      oy = clientY - r.top;
+    }
+    function dragMove(clientX, clientY) {
+      if (!dragging) return;
+      win.style.left = (clientX - ox) + 'px';
+      win.style.top  = (clientY - oy) + 'px';
+    }
+
     titlebar.addEventListener('mousedown', function(e) {
       if (e.target.classList.contains('popup-win-btn')) return;
-      dragging = true;
-      ox = e.clientX - win.getBoundingClientRect().left;
-      oy = e.clientY - win.getBoundingClientRect().top;
+      dragStart(e.clientX, e.clientY);
       e.preventDefault();
     });
-    document.addEventListener('mousemove', function move(e) {
+    titlebar.addEventListener('touchstart', function(e) {
+      if (e.target.classList.contains('popup-win-btn')) return;
+      dragStart(e.touches[0].clientX, e.touches[0].clientY);
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('mousemove', function(e) { dragMove(e.clientX, e.clientY); });
+    document.addEventListener('touchmove', function(e) {
       if (!dragging) return;
-      win.style.left = (e.clientX - ox) + 'px';
-      win.style.top  = (e.clientY - oy) + 'px';
-    });
-    document.addEventListener('mouseup', function() { dragging = false; });
+      dragMove(e.touches[0].clientX, e.touches[0].clientY);
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('mouseup',  function() { dragging = false; });
+    document.addEventListener('touchend', function() { dragging = false; });
   }
 </script>
 </body>
