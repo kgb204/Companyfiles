@@ -925,35 +925,35 @@
   // ===== BOOT SEQUENCE =====
   const bootLines = [
     { text: 'COMPANYFILES.ZIP BIOS v1.337 (C)1997 MEGACORP SYSTEMS', delay: 0 },
-    { text: 'CPU: PENTIUM III 450MHz  RAM: 64MB  HDD: 6.4GB', delay: 60 },
-    { text: '', delay: 80 },
-    { text: 'CHECKING MEMORY...', delay: 100 },
-    { text: 'OK (mostly)', delay: 200 },
-    { text: '', delay: 250 },
-    { text: 'LOADING HACKER.SYS.................', delay: 300 },
-    { text: 'LOADING DEFINITELY_LEGAL.DLL.......', delay: 500 },
-    { text: 'LOADING SYNERGY_MODULE.EXE.........', delay: 700 },
-    { text: '', delay: 900 },
-    { text: 'INITIATING SECURE CONNECTION TO COMPANYFILES.ZIP...', delay: 1000 },
-    { text: 'BYPASSING FIREWALL...', delay: 1300, progressBar: true },
-    { text: 'ENCRYPTING YOUR DATA (OPTIONAL)...', delay: 2200 },
-    { text: 'PERFORMING VIGOROUS HANDSHAKE......', delay: 2500 },
-    { text: 'ESTABLISHING TRUST (PLEASE HOLD)...', delay: 2700 },
-    { text: '', delay: 2900 },
-    { text: 'SCANNING FOR THREATS...', delay: 3000 },
-    { text: '    > THREATS FOUND: 0 (we checked twice)', delay: 3300 },
-    { text: '    > DEFINITELY NOT WATCHING YOU: TRUE', delay: 3500 },
-    { text: '', delay: 3700 },
-    { text: 'ACCESSING COMPANYFILES.ZIP...', delay: 3900 },
-    { text: '', delay: 4400 },
-    { text: '████████████████████████████████████████', delay: 4500 },
-    { text: '█                                      █', delay: 4520 },
-    { text: '█   *** ACCESS GRANTED ***             █', delay: 4540 },
-    { text: '█   Welcome, valued stakeholder.       █', delay: 4560 },
-    { text: '█   Please do not touch anything.      █', delay: 4580 },
-    { text: '█                                      █', delay: 4600 },
-    { text: '████████████████████████████████████████', delay: 4620 },
-    { text: '', delay: 4700 },
+    { text: 'CPU: PENTIUM III 450MHz  RAM: 64MB  HDD: 6.4GB', delay: 300 },
+    { text: '', delay: 600 },
+    { text: 'CHECKING MEMORY...', delay: 800 },
+    { text: 'OK (mostly)', delay: 1300 },
+    { text: '', delay: 1600 },
+    { text: 'LOADING HACKER.SYS.................', delay: 1900 },
+    { text: 'LOADING DEFINITELY_LEGAL.DLL.......', delay: 2400 },
+    { text: 'LOADING SYNERGY_MODULE.EXE.........', delay: 2900 },
+    { text: '', delay: 3300 },
+    { text: 'INITIATING SECURE CONNECTION TO COMPANYFILES.ZIP...', delay: 3600 },
+    { text: 'BYPASSING FIREWALL...', delay: 4200, progressBar: true },
+    { text: 'ENCRYPTING YOUR DATA (OPTIONAL)...', delay: 5400 },
+    { text: 'PERFORMING VIGOROUS HANDSHAKE......', delay: 5900 },
+    { text: 'ESTABLISHING TRUST (PLEASE HOLD)...', delay: 6400 },
+    { text: '', delay: 6900 },
+    { text: 'SCANNING FOR THREATS...', delay: 7200 },
+    { text: '    > THREATS FOUND: 0 (we checked twice)', delay: 7800 },
+    { text: '    > DEFINITELY NOT WATCHING YOU: TRUE', delay: 8400 },
+    { text: '', delay: 8900 },
+    { text: 'ACCESSING COMPANYFILES.ZIP...', delay: 9200 },
+    { text: '', delay: 9900 },
+    { text: '████████████████████████████████████████', delay: 10200 },
+    { text: '█                                      █', delay: 10500 },
+    { text: '█   *** ACCESS GRANTED ***             █', delay: 10800 },
+    { text: '█   Welcome, valued stakeholder.       █', delay: 11100 },
+    { text: '█   Please do not touch anything.      █', delay: 11400 },
+    { text: '█                                      █', delay: 11700 },
+    { text: '████████████████████████████████████████', delay: 12000 },
+    { text: '', delay: 12400 },
   ];
 
   const bootContainer = document.getElementById('boot-lines');
@@ -1004,7 +1004,7 @@
     terminalPrint('resp', 'COMPANYFILES.ZIP SECURE TERMINAL v0.9b');
     terminalPrint('resp', 'Type "help" for a list of commands.');
     terminalPrint('resp', '');
-  }, maxDelay + 600);
+  }, maxDelay + 2000);
 
   // ===== DECRYPTION MODAL =====
   document.getElementById('download-link').addEventListener('click', function(e) {
