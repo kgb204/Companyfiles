@@ -882,6 +882,47 @@
       color: #555;
     }
     #winamp-vol { flex: 1; accent-color: #00cc00; cursor: pointer; height: 4px; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 600px) {
+      html { overflow-x: hidden; }
+
+      #boot-screen { padding: 16px; }
+      #boot-lines { font-size: 14px; }
+      #boot-lines p { white-space: pre-wrap; word-break: break-word; }
+
+      #ascii-logo { display: none; }
+
+      #main-inner { padding: 12px 16px 0; }
+      h1 { font-size: 26px; letter-spacing: 2px; }
+      .tagline { font-size: 16px; letter-spacing: 1px; }
+      .section-header { font-size: 17px; }
+
+      #decrypt-box { min-width: unset; width: 88vw; padding: 20px 16px; }
+
+      .warning-box { font-size: 15px; padding: 10px 14px; }
+
+      .dossier-wrap { padding: 14px 14px 12px; }
+      .dossier-field { flex-direction: column; gap: 0; }
+      .dossier-label { min-width: unset; font-size: 13px; color: #005500; }
+      .dossier-value { font-size: 15px; }
+
+      .dir-listing { font-size: 13px; padding: 10px 12px; }
+      .dir-listing .row .date { display: none; }
+      .dir-listing .row .perms { min-width: 70px; }
+      .dir-listing .row .size  { min-width: 44px; }
+
+      .construction-scene { gap: 16px; }
+
+      #webring-section { flex-direction: column; }
+
+      #footer { padding: 24px 16px; letter-spacing: 1px; font-size: 17px; }
+
+      #chat-widget { width: calc(100vw - 20px); right: 10px; }
+
+      #winamp { width: calc(100vw - 20px); left: 10px; }
+      #winamp-display { padding: 4px 6px; }
+    }
   </style>
 </head>
 <body>
