@@ -1598,6 +1598,11 @@
     "I've reset your password to 'Password1'. Please change it to something secure like 'Password2'.",
     "The cloud is just someone else's computer. I unplugged it. Sorry.",
     "According to my logs, that error doesn't exist. So you're fine.",
+    "What is your ticket number? You do have a ticket number, right?",
+    "Please change your ticket status to 'In Progress'. I will then change it back to 'Open'.",
+    "I'm showing ticket #4521 as resolved. Was that not your issue? Please open a new ticket.",
+    "That ticket has been reassigned 7 times. It is now assigned to you.",
+    "Your ticket number is noted. It will be reviewed in the order it was received. Order: unclear.",
   ];
 
   let chatOpen = false;
@@ -1609,7 +1614,7 @@
     document.getElementById('chat-chevron').textContent = chatOpen ? '▼' : '▲';
     if (chatOpen && !daveGreeted) {
       daveGreeted = true;
-      setTimeout(() => addChatMsg('dave', "Hi, this is Ken. What seems to be the issue? (Note: I cannot fix most issues.)"), 600);
+      setTimeout(() => addChatMsg('dave', "Hi, this is Ken from IT. What is your ticket number? Or if you don't have one, what seems to be the issue? (Note: you will need a ticket number.)"), 600);
     }
   }
 
