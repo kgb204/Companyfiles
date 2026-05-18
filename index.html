@@ -871,60 +871,6 @@
   </div>
 </div>
 
-<!-- WINAMP PLAYER -->
-<div id="winamp" style="display:none">
-  <div id="winamp-titlebar">
-    <span class="winamp-logo">WINAMP</span>
-    <div class="winamp-title-btns">
-      <button class="winamp-title-btn" id="winamp-min">_</button>
-      <button class="winamp-title-btn" id="winamp-close-btn">×</button>
-    </div>
-  </div>
-  <div id="winamp-body">
-    <div id="winamp-display">
-      <div id="winamp-time">0:00</div>
-      <div class="winamp-status">
-        <span class="winamp-badge" id="wbadge-play">PLAY</span>
-        <span class="winamp-badge" id="wbadge-stop" style="color:#00ff00;border-color:#00ff00">STOP</span>
-        <span class="winamp-badge">128kbps</span>
-        <span class="winamp-badge">44kHz</span>
-      </div>
-      <div id="winamp-trackname">KGB — DEC 99 MIX</div>
-      <div id="winamp-track-counter">1 / 2</div>
-      <div id="winamp-viz">
-        <span style="--dur:.35s;--delay:0s"></span>
-        <span style="--dur:.28s;--delay:.05s"></span>
-        <span style="--dur:.42s;--delay:.10s"></span>
-        <span style="--dur:.31s;--delay:.02s"></span>
-        <span style="--dur:.45s;--delay:.08s"></span>
-        <span style="--dur:.26s;--delay:.13s"></span>
-        <span style="--dur:.38s;--delay:.03s"></span>
-        <span style="--dur:.33s;--delay:.07s"></span>
-        <span style="--dur:.48s;--delay:.01s"></span>
-        <span style="--dur:.29s;--delay:.11s"></span>
-        <span style="--dur:.41s;--delay:.04s"></span>
-        <span style="--dur:.36s;--delay:.09s"></span>
-      </div>
-    </div>
-    <div id="winamp-controls">
-      <button class="wbtn" id="wbtn-prev">⏮</button>
-      <button class="wbtn" id="wbtn-play">▶</button>
-      <button class="wbtn" id="wbtn-pause">⏸</button>
-      <button class="wbtn" id="wbtn-stop">■</button>
-      <button class="wbtn" id="wbtn-next">⏭</button>
-    </div>
-    <div id="winamp-seek-wrap">
-      <div id="winamp-seekbar"><div id="winamp-seekpos"></div></div>
-    </div>
-    <div id="winamp-vol-wrap">
-      <label>VOL</label>
-      <input type="range" id="winamp-vol" min="0" max="100" value="80">
-    </div>
-    <iframe id="winamp-sc" src="" allow="autoplay"
-      style="width:1px;height:1px;position:absolute;left:-9999px;top:-9999px;border:none"></iframe>
-  </div>
-</div>
-
 <!-- MAIN CONTENT -->
 <div id="main">
 
@@ -1102,6 +1048,61 @@
     </div>
 
   </div><!-- /#main-inner -->
+
+  <!-- WINAMP PLAYER — inside #main so it's hidden during boot -->
+  <div id="winamp">
+    <div id="winamp-titlebar">
+      <span class="winamp-logo">WINAMP</span>
+      <div class="winamp-title-btns">
+        <button class="winamp-title-btn" id="winamp-min">_</button>
+        <button class="winamp-title-btn" id="winamp-close-btn">×</button>
+      </div>
+    </div>
+    <div id="winamp-body">
+      <div id="winamp-display">
+        <div id="winamp-time">0:00</div>
+        <div class="winamp-status">
+          <span class="winamp-badge" id="wbadge-play">PLAY</span>
+          <span class="winamp-badge" id="wbadge-stop" style="color:#00ff00;border-color:#00ff00">STOP</span>
+          <span class="winamp-badge">128kbps</span>
+          <span class="winamp-badge">44kHz</span>
+        </div>
+        <div id="winamp-trackname">KGB — DEC 99 MIX</div>
+        <div id="winamp-track-counter">1 / 2</div>
+        <div id="winamp-viz">
+          <span style="--dur:.35s;--delay:0s"></span>
+          <span style="--dur:.28s;--delay:.05s"></span>
+          <span style="--dur:.42s;--delay:.10s"></span>
+          <span style="--dur:.31s;--delay:.02s"></span>
+          <span style="--dur:.45s;--delay:.08s"></span>
+          <span style="--dur:.26s;--delay:.13s"></span>
+          <span style="--dur:.38s;--delay:.03s"></span>
+          <span style="--dur:.33s;--delay:.07s"></span>
+          <span style="--dur:.48s;--delay:.01s"></span>
+          <span style="--dur:.29s;--delay:.11s"></span>
+          <span style="--dur:.41s;--delay:.04s"></span>
+          <span style="--dur:.36s;--delay:.09s"></span>
+        </div>
+      </div>
+      <div id="winamp-controls">
+        <button class="wbtn" id="wbtn-prev">⏮</button>
+        <button class="wbtn" id="wbtn-play">▶</button>
+        <button class="wbtn" id="wbtn-pause">⏸</button>
+        <button class="wbtn" id="wbtn-stop">■</button>
+        <button class="wbtn" id="wbtn-next">⏭</button>
+      </div>
+      <div id="winamp-seek-wrap">
+        <div id="winamp-seekbar"><div id="winamp-seekpos"></div></div>
+      </div>
+      <div id="winamp-vol-wrap">
+        <label>VOL</label>
+        <input type="range" id="winamp-vol" min="0" max="100" value="80">
+      </div>
+      <iframe id="winamp-sc" src="" allow="autoplay"
+        style="width:1px;height:1px;position:absolute;left:-9999px;top:-9999px;border:none"></iframe>
+    </div>
+  </div>
+
 </div><!-- /#main -->
 
 <script>
@@ -1168,14 +1169,19 @@
     }, line.delay);
   });
 
+  // Hit counter — increments on every page load, persists in localStorage
+  const hitCount = (parseInt(localStorage.getItem('cfz_hits') || '4269')) + 1;
+  localStorage.setItem('cfz_hits', hitCount);
+  document.getElementById('hit-counter-display').textContent = String(hitCount).padStart(7, '0');
+  document.getElementById('your-number').textContent = hitCount.toLocaleString();
+
   setTimeout(() => {
     document.getElementById('boot-screen').style.display = 'none';
     document.getElementById('main').style.display = 'block';
-    document.getElementById('winamp').style.display = '';
 
-    // Animate visitor counter — stays in sync with the hit counter
+    // Animate visitor counter up to the live hit count
     let count = 0;
-    const target = 4269;
+    const target = hitCount;
     const el = document.getElementById('visitor-counter');
     const step = Math.ceil(target / 60);
     const ticker = setInterval(() => {
