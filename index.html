@@ -866,17 +866,10 @@
     .wbtn-on { color: #00ff00; }
     #winamp-seek-wrap { padding: 0 6px 4px; }
     #winamp-seekbar {
-      height: 8px;
-      background: #111;
-      border: 1px solid #333;
+      width: 100%;
+      accent-color: #00cc00;
       cursor: pointer;
-      position: relative;
-    }
-    #winamp-seekpos {
-      height: 100%;
-      background: #00aa00;
-      width: 0;
-      pointer-events: none;
+      height: 4px;
     }
     #winamp-vol-wrap {
       display: flex;
@@ -1421,7 +1414,7 @@
         <button class="wbtn" id="wbtn-next">⏭</button>
       </div>
       <div id="winamp-seek-wrap">
-        <div id="winamp-seekbar"><div id="winamp-seekpos"></div></div>
+        <input type="range" id="winamp-seekbar" min="0" max="1000" value="0" step="1">
       </div>
       <div id="winamp-vol-wrap">
         <label>VOL</label>
@@ -1856,6 +1849,7 @@
     let currentTrack = 0;
     let widget = null;
     let isPlaying = false;
+    let seeking = false;
 
     function scEmbedUrl(trackUrl, autoplay) {
       return 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(trackUrl) +
@@ -1868,7 +1862,7 @@
       document.getElementById('winamp-trackname').textContent = t.title;
       document.getElementById('winamp-track-counter').textContent = (currentTrack + 1) + ' / ' + tracks.length;
       document.getElementById('winamp-time').textContent = '0:00';
-      document.getElementById('winamp-seekpos').style.width = '0';
+      document.getElementById('winamp-seekbar').value = 0;
     }
 
     function loadTrack(index, autoplay) {
@@ -1903,7 +1897,7 @@
         const s = Math.floor(e.currentPosition / 1000);
         document.getElementById('winamp-time').textContent =
           Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
-        document.getElementById('winamp-seekpos').style.width = (e.relativePosition * 100) + '%';
+        if (!seeking) document.getElementById('winamp-seekbar').value = Math.round(e.relativePosition * 1000);
       });
       widget.bind(SC.Widget.Events.FINISH, function() {
         loadTrack(currentTrack + 1, true);
@@ -1926,7 +1920,7 @@
       if (widget) { widget.pause(); widget.seekTo(0); }
       isPlaying = false;
       document.getElementById('winamp-time').textContent = '0:00';
-      document.getElementById('winamp-seekpos').style.width = '0';
+      document.getElementById('winamp-seekbar').value = 0;
       document.getElementById('winamp-viz').classList.remove('playing');
       document.getElementById('wbadge-play').classList.remove('active');
       document.getElementById('wbadge-stop').classList.add('active');
@@ -1942,10 +1936,18 @@
       if (widget) widget.setVolume(this.value);
     });
 
-    document.getElementById('winamp-seekbar').addEventListener('click', function(e) {
+    const seekbar = document.getElementById('winamp-seekbar');
+    seekbar.addEventListener('mousedown', function() { seeking = true; });
+    seekbar.addEventListener('touchstart', function() { seeking = true; }, { passive: true });
+    seekbar.addEventListener('mouseup', function() {
+      seeking = false;
       if (!widget) return;
-      const ratio = (e.clientX - this.getBoundingClientRect().left) / this.offsetWidth;
-      widget.getDuration(function(dur) { widget.seekTo(dur * ratio); });
+      widget.getDuration(function(dur) { widget.seekTo(dur * (seekbar.value / 1000)); });
+    });
+    seekbar.addEventListener('touchend', function() {
+      seeking = false;
+      if (!widget) return;
+      widget.getDuration(function(dur) { widget.seekTo(dur * (seekbar.value / 1000)); });
     });
 
     // Minimize
