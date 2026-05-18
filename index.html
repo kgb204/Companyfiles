@@ -1858,6 +1858,7 @@
     }
 
     function updateDisplay() {
+      seeking = false;
       const t = tracks[currentTrack];
       document.getElementById('winamp-trackname').textContent = t.title;
       document.getElementById('winamp-track-counter').textContent = (currentTrack + 1) + ' / ' + tracks.length;
@@ -1939,16 +1940,16 @@
     const seekbar = document.getElementById('winamp-seekbar');
     seekbar.addEventListener('mousedown', function() { seeking = true; });
     seekbar.addEventListener('touchstart', function() { seeking = true; }, { passive: true });
-    seekbar.addEventListener('mouseup', function() {
+
+    function doSeek() {
       seeking = false;
       if (!widget) return;
       widget.getDuration(function(dur) { widget.seekTo(dur * (seekbar.value / 1000)); });
+    }
+    window.addEventListener('mouseup', function(e) {
+      if (seeking) doSeek();
     });
-    seekbar.addEventListener('touchend', function() {
-      seeking = false;
-      if (!widget) return;
-      widget.getDuration(function(dur) { widget.seekTo(dur * (seekbar.value / 1000)); });
-    });
+    seekbar.addEventListener('touchend', doSeek);
 
     // Minimize
     let minimized = false;
