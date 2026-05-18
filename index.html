@@ -699,6 +699,56 @@
     }
     .popup-action-btn:active { border-color: #808080 #ffffff #ffffff #808080; }
 
+    /* ===== PERSONNEL DOSSIER ===== */
+    .dossier-wrap {
+      border: 1px solid #008800;
+      background: #001100;
+      padding: 20px 24px 16px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .dossier-stamp {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      color: #ff0000;
+      border: 3px solid #ff0000;
+      font-size: 20px;
+      letter-spacing: 6px;
+      padding: 2px 10px;
+      transform: rotate(-8deg);
+      opacity: 0.65;
+      pointer-events: none;
+    }
+    .dossier-grid { display: grid; gap: 6px; margin-bottom: 16px; }
+    .dossier-field { display: flex; gap: 12px; font-size: 16px; line-height: 1.7; }
+    .dossier-label { color: #006600; min-width: 230px; flex-shrink: 0; font-size: 15px; }
+    .dossier-value { color: #00ff00; }
+    .dossier-value small { color: #005500; font-size: 13px; }
+    .dossier-footer {
+      border-top: 1px solid #004400;
+      padding-top: 14px;
+      text-align: center;
+    }
+    .dossier-intel {
+      color: #005500;
+      font-size: 13px;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .dossier-link {
+      display: inline-block;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 6px 22px;
+      text-decoration: none;
+      font-size: 18px;
+      letter-spacing: 2px;
+      animation: blink 2s step-start infinite;
+    }
+    .dossier-link:hover { background: #003300; animation: none; }
+
     /* ===== WINAMP PLAYER ===== */
     #winamp {
       position: fixed;
@@ -923,6 +973,60 @@
       By proceeding you agree that you have read our 847-page Terms of Service, our Privacy Policy,
       our Cookie Policy, our Cookie Policy Amendment (2019), our Cookie Policy Amendment Retraction (2020),
       and the handwritten note taped to the break room microwave.
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-header">[ PERSONNEL FILE — LEVEL 5 CLEARANCE REQUIRED ]</div>
+    <div class="dossier-wrap">
+      <div class="dossier-stamp">CLASSIFIED</div>
+      <div class="dossier-grid">
+        <div class="dossier-field">
+          <span class="dossier-label">SUBJECT:</span>
+          <span class="dossier-value">KEN BAUER</span>
+        </div>
+        <div class="dossier-field">
+          <span class="dossier-label">CLEARANCE LEVEL:</span>
+          <span class="dossier-value">████████████ (VERY HIGH)</span>
+        </div>
+        <div class="dossier-field">
+          <span class="dossier-label">STATUS:</span>
+          <span class="dossier-value" style="color:#ffff00">OPEN TO OPPORTUNITIES (probably)</span>
+        </div>
+        <div class="dossier-field">
+          <span class="dossier-label">THREAT TO COMPETITORS:</span>
+          <span class="dossier-value" style="color:#ff4444">██████████████ HIGH</span>
+        </div>
+        <div class="dossier-field">
+          <span class="dossier-label">KNOWN SKILLS:</span>
+          <span class="dossier-value">██████████, ██████████, ██████████<br>
+          <small>[ CLASSIFIED — REQUEST FULL DOSSIER FOR DETAILS ]</small></span>
+        </div>
+        <div class="dossier-field">
+          <span class="dossier-label">PREVIOUS MISSIONS:</span>
+          <span class="dossier-value">[REDACTED] [REDACTED] [REDACTED]</span>
+        </div>
+        <div class="dossier-field">
+          <span class="dossier-label">EDUCATION:</span>
+          <span class="dossier-value">████████████████ <small>(unverified)</small></span>
+        </div>
+        <div class="dossier-field">
+          <span class="dossier-label">NOTABLE INCIDENT:</span>
+          <span class="dossier-value">Survived Q4 review. Details sealed by court order.</span>
+        </div>
+        <div class="dossier-field">
+          <span class="dossier-label">CURRENT LOCATION:</span>
+          <span class="dossier-value">Unknown. Last seen near the coffee machine.</span>
+        </div>
+      </div>
+      <div class="dossier-footer">
+        <div class="dossier-intel">
+          INTEL VERIFIED BY: THE NSA, KEN'S MUM, AND A OUIJA BOARD &nbsp;|&nbsp; LAST UPDATED: RECENTLY (we think)
+        </div>
+        <a href="https://www.linkedin.com/in/bauer-ken/" target="_blank" rel="noopener" class="dossier-link">
+          [ REQUEST FULL DOSSIER — LINKEDIN SECURE CHANNEL ]
+        </a>
+      </div>
     </div>
 
     <hr class="divider">
@@ -1373,6 +1477,7 @@
       '  help         — you are here',
       '  ls           — list files',
       '  whoami       — identity crisis',
+      '  dossier      — personnel file (classified)',
       '  pwd          — print working directory',
       '  sudo         — do something dangerous',
       '  hack         — initiate hacking sequence',
@@ -1390,7 +1495,21 @@
       '-rw-r--r--  meeting_notes_Q3.docx (0 bytes)',
       '-rw-r--r--  companyfiles.zip  [ENCRYPTED]',
     ],
-    'whoami': ['root', '(you are also being watched)'],
+    'whoami': ['root', '(you are also being watched)', 'HINT: type "dossier" for personnel file'],
+    'dossier': [
+      'ACCESSING PERSONNEL FILE...',
+      '████████████████████████████████████████',
+      'SUBJECT        : KEN BAUER',
+      'CLEARANCE      : ████████████ (VERY HIGH)',
+      'STATUS         : OPEN TO OPPORTUNITIES (probably)',
+      'SKILLS         : [CLASSIFIED]',
+      'PREVIOUS OPS   : [REDACTED] [REDACTED] [REDACTED]',
+      'THREAT LEVEL   : HIGH (to competitors)',
+      '████████████████████████████████████████',
+      '',
+      '⚠ FULL DOSSIER AVAILABLE VIA SECURE CHANNEL:',
+      { link: 'https://www.linkedin.com/in/bauer-ken/', label: '  → linkedin.com/in/bauer-ken' },
+    ],
     'pwd': ['/var/company/definitely-real-files/'],
     'sudo': ['[sudo] password for user: ', '...', 'We have sent your password attempt to Ken.', 'Ken is not pleased.'],
     'hack': [
@@ -1428,7 +1547,17 @@
     const out = document.getElementById('terminal-output');
     const div = document.createElement('div');
     div.className = 't-' + type;
-    div.textContent = text;
+    if (text && typeof text === 'object' && text.link) {
+      const a = document.createElement('a');
+      a.href = text.link;
+      a.textContent = text.label;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.style.cssText = 'color:#00ff00;text-decoration:underline;';
+      div.appendChild(a);
+    } else {
+      div.textContent = text;
+    }
     out.appendChild(div);
     out.scrollTop = out.scrollHeight;
   }
