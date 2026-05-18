@@ -684,6 +684,75 @@
       font-size: 20px;
       letter-spacing: 3px;
     }
+
+    /* ===== FAKE POPUP ADS ===== */
+    .popup-window {
+      position: fixed;
+      z-index: 30000;
+      background: #c0c0c0;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      box-shadow: 3px 3px 0 #000000;
+      min-width: 340px;
+      max-width: 400px;
+      font-family: 'VT323', 'Courier New', monospace;
+    }
+    .popup-titlebar {
+      background: linear-gradient(to right, #000080, #1084d0);
+      color: #fff;
+      padding: 3px 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      letter-spacing: 1px;
+      user-select: none;
+      cursor: default;
+    }
+    .popup-titlebar-btns { display: flex; gap: 2px; }
+    .popup-win-btn {
+      background: #c0c0c0;
+      border: 1px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      color: #000;
+      font-family: inherit;
+      font-size: 13px;
+      width: 18px;
+      height: 16px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+    }
+    .popup-win-btn:active { border-color: #808080 #ffffff #ffffff #808080; }
+    .popup-body {
+      padding: 18px 22px 10px;
+      font-size: 18px;
+      color: #000;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .popup-body .popup-icon { font-size: 38px; margin-bottom: 6px; }
+    .popup-body strong { color: #000080; }
+    .popup-body small { font-size: 13px; color: #555; display: block; margin-top: 4px; }
+    .popup-footer {
+      padding: 8px 22px 16px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .popup-action-btn {
+      background: #c0c0c0;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      color: #000;
+      font-family: inherit;
+      font-size: 16px;
+      padding: 3px 18px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      min-width: 90px;
+    }
+    .popup-action-btn:active { border-color: #808080 #ffffff #ffffff #808080; }
   </style>
 </head>
 <body>
@@ -1004,6 +1073,7 @@
     terminalPrint('resp', 'COMPANYFILES.ZIP SECURE TERMINAL v0.9b');
     terminalPrint('resp', 'Type "help" for a list of commands.');
     terminalPrint('resp', '');
+    setTimeout(showPopup, 3000);
   }, maxDelay + 5000);
 
   // ===== DECRYPTION MODAL =====
@@ -1369,6 +1439,93 @@
       f++;
     }, 180);
   })();
+
+  // ===== FAKE POPUP ADS =====
+  const popupQueue = [
+    {
+      title: '*** CONGRATULATIONS ***',
+      icon: '🎉',
+      body: 'You are the <strong>1,000,000th visitor!</strong><br>You have won a FREE iPod Mini!',
+      small: 'offer expires Jan 1 2003',
+      btn: 'CLAIM MY PRIZE',
+    },
+    {
+      title: 'SECURITY WARNING',
+      icon: '⚠️',
+      body: 'Your computer has <strong>47 viruses</strong> detected.<br>Download our FREE scanner NOW!',
+      small: 'totally not also a virus',
+      btn: 'DOWNLOAD FREE FIX',
+    },
+    {
+      title: 'YOU HAVE (1) NEW MESSAGE',
+      icon: '💌',
+      body: '<strong>HOT SINGLES</strong> in your area<br>are waiting to connect!!!',
+      small: 'area may not exist',
+      btn: 'VIEW PROFILES',
+    },
+    {
+      title: 'FREE SCREENSAVER OFFER',
+      icon: '💾',
+      body: 'Download this <strong>AMAZING</strong> 3D pipes screensaver!<br>Only 47MB!',
+      small: 'estimated download time on 56k: 4 days',
+      btn: 'YES PLEASE',
+    },
+    {
+      title: 'PRINTER NOTIFICATION',
+      icon: '🖨️',
+      body: 'Your printer is <strong>connected</strong>.<br>Your printer is <strong>not connected</strong>.',
+      small: 'both are true simultaneously',
+      btn: 'OK I GUESS',
+    },
+    {
+      title: '!!! FINAL WARNING !!!',
+      icon: '🚨',
+      body: 'This is your <strong>FINAL WARNING</strong>.<br>We mean it this time.',
+      small: '(we said this last time too)',
+      btn: 'CLOSE FOREVER',
+    },
+  ];
+
+  let popupCount = 0;
+
+  function showPopup() {
+    const data = popupQueue[popupCount % popupQueue.length];
+    popupCount++;
+
+    const win = document.createElement('div');
+    win.className = 'popup-window';
+    const left = 60 + Math.random() * Math.max(20, window.innerWidth - 480);
+    const top  = 60 + Math.random() * Math.max(20, window.innerHeight - 280);
+    win.style.cssText = `left:${left}px;top:${top}px;`;
+
+    win.innerHTML =
+      `<div class="popup-titlebar">` +
+        `<span>${data.title}</span>` +
+        `<div class="popup-titlebar-btns">` +
+          `<button class="popup-win-btn">_</button>` +
+          `<button class="popup-win-btn">□</button>` +
+          `<button class="popup-win-btn popup-x">✕</button>` +
+        `</div>` +
+      `</div>` +
+      `<div class="popup-body">` +
+        `<div class="popup-icon">${data.icon}</div>` +
+        `${data.body}` +
+        `<small>${data.small}</small>` +
+      `</div>` +
+      `<div class="popup-footer">` +
+        `<button class="popup-action-btn popup-x">[ ${data.btn} ]</button>` +
+        `<button class="popup-action-btn popup-x">[ NO THANKS ]</button>` +
+      `</div>`;
+
+    document.body.appendChild(win);
+
+    win.querySelectorAll('.popup-x').forEach(btn => {
+      btn.addEventListener('click', () => {
+        win.remove();
+        if (popupCount < popupQueue.length) setTimeout(showPopup, 400);
+      });
+    });
+  }
 </script>
 </body>
 </html>
