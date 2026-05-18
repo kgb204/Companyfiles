@@ -902,10 +902,12 @@
 
       .warning-box { font-size: 15px; padding: 10px 14px; }
 
-      .dossier-wrap { padding: 14px 14px 12px; }
+      .dossier-wrap { padding: 14px 14px 12px; overflow: hidden; }
       .dossier-field { flex-direction: column; gap: 0; }
       .dossier-label { min-width: unset; font-size: 13px; color: #005500; }
-      .dossier-value { font-size: 15px; }
+      .dossier-value { font-size: 15px; word-break: break-all; overflow-wrap: break-word; }
+      .dossier-intel { font-size: 11px; letter-spacing: 0; }
+      .dossier-link { font-size: 15px; letter-spacing: 1px; word-break: break-word; padding: 6px 10px; }
 
       .dir-listing { font-size: 13px; padding: 10px 12px; }
       .dir-listing .row .date { display: none; }
