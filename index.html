@@ -477,7 +477,7 @@
       animation: blink 2s step-start infinite;
     }
 
-    /* ===== DAVE FROM IT CHAT ===== */
+    /* ===== KEN FROM IT CHAT ===== */
     #chat-widget {
       position: fixed;
       bottom: 20px;
@@ -523,7 +523,7 @@
     }
     .chat-msg { line-height: 1.4; font-size: 14px; }
     .chat-msg.dave { color: #00ff00; }
-    .chat-msg.dave::before { content: 'DAVE> '; color: #008800; }
+    .chat-msg.dave::before { content: 'KEN> '; color: #008800; }
     .chat-msg.user { color: #ffff00; text-align: right; }
     .chat-msg.user::after { content: ' <YOU'; color: #888800; }
     #chat-input-row {
@@ -856,7 +856,7 @@
 <canvas id="matrix-canvas"></canvas>
 <div id="matrix-dismiss" onclick="stopMatrix()">[ PRESS ANY KEY OR CLICK TO EXIT ]</div>
 
-<!-- DAVE FROM IT CHAT -->
+<!-- KEN FROM IT CHAT -->
 <div id="chat-widget">
   <div id="chat-body">
     <div id="chat-messages"></div>
@@ -866,7 +866,7 @@
     </div>
   </div>
   <div id="chat-header" onclick="toggleChat()">
-    <span><span class="chat-status"></span>IT SUPPORT — DAVE (online)</span>
+    <span><span class="chat-status"></span>IT SUPPORT — KEN (online)</span>
     <span id="chat-chevron">▲</span>
   </div>
 </div>
@@ -879,7 +879,7 @@
     <span id="ticker-label">BREAKING</span>
     <span id="ticker-text">
       EMPLOYEE OF THE MONTH EMBEZZLEMENT SCANDAL — MORE AT 11 &nbsp;★&nbsp;
-      FIREWALL NOW 18% OPERATIONAL AFTER CRITICAL PATCH: "WE THINK" SAYS DAVE &nbsp;★&nbsp;
+      FIREWALL NOW 18% OPERATIONAL AFTER CRITICAL PATCH: "WE THINK" SAYS KEN &nbsp;★&nbsp;
       MANDATORY FUN FRIDAY ATTENDANCE NOW BEING TRACKED &nbsp;★&nbsp;
       CEO PIVOTS COMPANY TO "AI-POWERED BLOCKCHAIN SYNERGY AS A SERVICE" — FOURTH PIVOT THIS MONTH &nbsp;★&nbsp;
       REMINDER: THE PRINTER ON FLOOR 3 IS STILL HAUNTED. DO NOT ATTEMPT TO SCAN &nbsp;★&nbsp;
@@ -917,7 +917,7 @@
     <div class="warning-box">
       <div class="w-title">⚠ NOTICE TO ALL EMPLOYEES ⚠</div><br>
       This portal is <strong>100% monitored</strong> by our crack team of cybersecurity professionals
-      (Dave from IT and his nephew who "knows computers"). Any unauthorised access will be met with
+      (Ken from IT and his nephew who "knows computers"). Any unauthorised access will be met with
       a strongly-worded email and a passive-aggressive Slack message.
       <br><br>
       By proceeding you agree that you have read our 847-page Terms of Service, our Privacy Policy,
@@ -1212,7 +1212,7 @@
     'Coffee break detected. Pausing decryption.',
     '...',
     '...',
-    'Resuming. Dave is back.',
+    'Resuming. Ken is back.',
     'Decrypting sector 420 of 847...',
     'WARNING: file contains traces of PowerPoint.',
     'Proceeding despite health risk.',
@@ -1257,11 +1257,11 @@
     }, 220);
   }
 
-  // ===== DAVE FROM IT CHAT =====
+  // ===== KEN FROM IT CHAT =====
   const daveReplies = [
     "Have you tried turning it off and on again?",
     "That's not in my ticket queue. Please submit a ticket.",
-    "I'm looking into it. (Dave is not looking into it.)",
+    "I'm looking into it. (Ken is not looking into it.)",
     "Did you check if it's plugged in?",
     "That's a known issue. It's on the roadmap. (The roadmap is a napkin.)",
     "Please don't touch that. I said please.",
@@ -1285,7 +1285,7 @@
     document.getElementById('chat-chevron').textContent = chatOpen ? '▼' : '▲';
     if (chatOpen && !daveGreeted) {
       daveGreeted = true;
-      setTimeout(() => addChatMsg('dave', "Hi, this is Dave. What seems to be the issue? (Note: I cannot fix most issues.)"), 600);
+      setTimeout(() => addChatMsg('dave', "Hi, this is Ken. What seems to be the issue? (Note: I cannot fix most issues.)"), 600);
     }
   }
 
@@ -1392,17 +1392,17 @@
     ],
     'whoami': ['root', '(you are also being watched)'],
     'pwd': ['/var/company/definitely-real-files/'],
-    'sudo': ['[sudo] password for user: ', '...', 'We have sent your password attempt to Dave.', 'Dave is not pleased.'],
+    'sudo': ['[sudo] password for user: ', '...', 'We have sent your password attempt to Ken.', 'Ken is not pleased.'],
     'hack': [
       'Initialising hack...',
       'HACKING... ████████████████████ 100%',
       'Access granted to: nothing useful.',
       'The mainframe has been hacked.',
-      'Dave has been notified.',
-      'Dave does not care.',
+      'Ken has been notified.',
+      'Ken does not care.',
     ],
-    'rm -rf /': ['No.', 'Absolutely not.', 'We have logged this.', 'Dave is deeply disappointed.'],
-    'cat secret': ['cat: secret: Permission denied', 'Also that file is just Dave\'s lunch order.'],
+    'rm -rf /': ['No.', 'Absolutely not.', 'We have logged this.', 'Ken is deeply disappointed.'],
+    'cat secret': ['cat: secret: Permission denied', 'Also that file is just Ken\'s lunch order.'],
     'synergy': [
       'ACTIVATING SYNERGY MODULE...',
       'Synergy levels: CRITICAL',
@@ -1421,7 +1421,7 @@
     'clear': ['__CLEAR__'],
     'date': [new Date().toString(), '(time is a flat circle)'],
     'uname': ['CompanyOS v0.0.1-alpha-beta-rc1 (UNSTABLE)'],
-    'ping': ['PING companyfiles.zip: Request timeout.', 'PING companyfiles.zip: Request timeout.', 'Dave unplugged the router again.'],
+    'ping': ['PING companyfiles.zip: Request timeout.', 'PING companyfiles.zip: Request timeout.', 'Ken unplugged the router again.'],
   };
 
   function terminalPrint(type, text) {
@@ -1454,7 +1454,7 @@
       });
     } else {
       terminalPrint('err', 'bash: ' + cmd + ': command not found');
-      terminalPrint('err', '(Dave wrote this shell. Dave is not a programmer.)');
+      terminalPrint('err', '(Ken wrote this shell. Ken is not a programmer.)');
     }
   });
 
