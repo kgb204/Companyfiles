@@ -753,6 +753,140 @@
       min-width: 90px;
     }
     .popup-action-btn:active { border-color: #808080 #ffffff #ffffff #808080; }
+
+    /* ===== WINAMP PLAYER ===== */
+    #winamp {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 280px;
+      background: #232323;
+      border: 2px solid;
+      border-color: #4a4a4a #111 #111 #4a4a4a;
+      z-index: 8500;
+      font-family: 'VT323', monospace;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+    }
+    #winamp-titlebar {
+      background: linear-gradient(to right, #1a3a6e, #0d1f42);
+      padding: 3px 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: move;
+      height: 22px;
+      user-select: none;
+    }
+    .winamp-logo { color: #9090ff; font-size: 14px; letter-spacing: 3px; font-style: italic; }
+    .winamp-title-btns { display: flex; gap: 2px; }
+    .winamp-title-btn {
+      background: #3a3a3a;
+      color: #ccc;
+      border: 1px solid #555;
+      font-size: 10px;
+      width: 14px;
+      height: 12px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      font-family: inherit;
+    }
+    .winamp-title-btn:hover { background: #555; color: #fff; }
+    #winamp-display {
+      background: #000;
+      margin: 4px;
+      padding: 6px 8px;
+      border: 1px solid #333;
+    }
+    #winamp-time {
+      color: #00dd00;
+      font-size: 30px;
+      letter-spacing: 4px;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+    .winamp-status {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+    .winamp-badge {
+      font-size: 11px;
+      padding: 1px 4px;
+      border: 1px solid #003300;
+      color: #005500;
+      letter-spacing: 1px;
+    }
+    .winamp-badge.active { color: #00ff00; border-color: #00ff00; }
+    #winamp-trackname {
+      color: #00bb00;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    #winamp-track-counter { color: #004400; font-size: 12px; text-align: right; }
+    #winamp-viz {
+      display: flex;
+      align-items: flex-end;
+      gap: 1px;
+      height: 18px;
+      margin-top: 5px;
+    }
+    #winamp-viz span {
+      display: inline-block;
+      flex: 1;
+      background: #003300;
+      height: 2px;
+    }
+    #winamp-viz.playing span { animation: wvbar var(--dur,0.4s) ease-in-out var(--delay,0s) infinite alternate; }
+    #winamp-viz.playing span:nth-child(odd)  { background: #00ff00; }
+    #winamp-viz.playing span:nth-child(even) { background: #00bb00; }
+    @keyframes wvbar { from { height: 2px; } to { height: 18px; } }
+    #winamp-controls {
+      display: flex;
+      gap: 3px;
+      padding: 4px 6px;
+    }
+    .wbtn {
+      flex: 1;
+      background: #3a3a3a;
+      color: #bbb;
+      border: 1px solid;
+      border-color: #555 #222 #222 #555;
+      font-family: inherit;
+      font-size: 17px;
+      padding: 1px 0;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .wbtn:hover { background: #4a4a4a; color: #fff; }
+    .wbtn:active { border-color: #222 #555 #555 #222; background: #2a2a2a; }
+    .wbtn-on { color: #00ff00; }
+    #winamp-seek-wrap { padding: 0 6px 4px; }
+    #winamp-seekbar {
+      height: 8px;
+      background: #111;
+      border: 1px solid #333;
+      cursor: pointer;
+      position: relative;
+    }
+    #winamp-seekpos {
+      height: 100%;
+      background: #00aa00;
+      width: 0;
+      pointer-events: none;
+    }
+    #winamp-vol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0 6px 6px;
+      font-size: 12px;
+      color: #555;
+    }
+    #winamp-vol { flex: 1; accent-color: #00cc00; cursor: pointer; height: 4px; }
   </style>
 </head>
 <body>
@@ -789,6 +923,60 @@
   <div id="chat-header" onclick="toggleChat()">
     <span><span class="chat-status"></span>IT SUPPORT — DAVE (online)</span>
     <span id="chat-chevron">▲</span>
+  </div>
+</div>
+
+<!-- WINAMP PLAYER -->
+<div id="winamp">
+  <div id="winamp-titlebar">
+    <span class="winamp-logo">WINAMP</span>
+    <div class="winamp-title-btns">
+      <button class="winamp-title-btn" id="winamp-min">_</button>
+      <button class="winamp-title-btn" id="winamp-close-btn">×</button>
+    </div>
+  </div>
+  <div id="winamp-body">
+    <div id="winamp-display">
+      <div id="winamp-time">0:00</div>
+      <div class="winamp-status">
+        <span class="winamp-badge" id="wbadge-play">PLAY</span>
+        <span class="winamp-badge" id="wbadge-stop" style="color:#00ff00;border-color:#00ff00">STOP</span>
+        <span class="winamp-badge">128kbps</span>
+        <span class="winamp-badge">44kHz</span>
+      </div>
+      <div id="winamp-trackname">KGB — DEC 99 MIX</div>
+      <div id="winamp-track-counter">1 / 1</div>
+      <div id="winamp-viz">
+        <span style="--dur:.35s;--delay:0s"></span>
+        <span style="--dur:.28s;--delay:.05s"></span>
+        <span style="--dur:.42s;--delay:.10s"></span>
+        <span style="--dur:.31s;--delay:.02s"></span>
+        <span style="--dur:.45s;--delay:.08s"></span>
+        <span style="--dur:.26s;--delay:.13s"></span>
+        <span style="--dur:.38s;--delay:.03s"></span>
+        <span style="--dur:.33s;--delay:.07s"></span>
+        <span style="--dur:.48s;--delay:.01s"></span>
+        <span style="--dur:.29s;--delay:.11s"></span>
+        <span style="--dur:.41s;--delay:.04s"></span>
+        <span style="--dur:.36s;--delay:.09s"></span>
+      </div>
+    </div>
+    <div id="winamp-controls">
+      <button class="wbtn" id="wbtn-prev">⏮</button>
+      <button class="wbtn" id="wbtn-play">▶</button>
+      <button class="wbtn" id="wbtn-pause">⏸</button>
+      <button class="wbtn" id="wbtn-stop">■</button>
+      <button class="wbtn" id="wbtn-next">⏭</button>
+    </div>
+    <div id="winamp-seek-wrap">
+      <div id="winamp-seekbar"><div id="winamp-seekpos"></div></div>
+    </div>
+    <div id="winamp-vol-wrap">
+      <label>VOL</label>
+      <input type="range" id="winamp-vol" min="0" max="100" value="80">
+    </div>
+    <iframe id="winamp-sc" src="" allow="autoplay"
+      style="width:1px;height:1px;position:absolute;left:-9999px;top:-9999px;border:none"></iframe>
   </div>
 </div>
 
@@ -1438,6 +1626,139 @@
       if (dirtEl) dirtEl.textContent = dirtStates[f % dirtStates.length];
       f++;
     }, 180);
+  })();
+
+  // ===== WINAMP PLAYER =====
+  (function() {
+    const tracks = [
+      { url: 'https://soundcloud.com/kgb204/kgb-dec-99-mix', title: 'KGB — DEC 99 MIX' },
+    ];
+
+    let currentTrack = 0;
+    let widget = null;
+    let isPlaying = false;
+
+    function scEmbedUrl(trackUrl, autoplay) {
+      return 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(trackUrl) +
+        '&color=%2300cc00&auto_play=' + (autoplay ? 'true' : 'false') +
+        '&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false';
+    }
+
+    function updateDisplay() {
+      const t = tracks[currentTrack];
+      document.getElementById('winamp-trackname').textContent = t.title;
+      document.getElementById('winamp-track-counter').textContent = (currentTrack + 1) + ' / ' + tracks.length;
+      document.getElementById('winamp-time').textContent = '0:00';
+      document.getElementById('winamp-seekpos').style.width = '0';
+    }
+
+    function loadTrack(index, autoplay) {
+      currentTrack = ((index % tracks.length) + tracks.length) % tracks.length;
+      updateDisplay();
+      const iframe = document.getElementById('winamp-sc');
+      iframe.src = scEmbedUrl(tracks[currentTrack].url, autoplay);
+      iframe.onload = function() {
+        if (typeof SC === 'undefined') return;
+        widget = SC.Widget(iframe);
+        widget.bind(SC.Widget.Events.READY, function() {
+          widget.setVolume(document.getElementById('winamp-vol').value);
+          if (autoplay) widget.play();
+        });
+        bindEvents();
+      };
+    }
+
+    function bindEvents() {
+      widget.bind(SC.Widget.Events.PLAY, function() {
+        isPlaying = true;
+        document.getElementById('winamp-viz').classList.add('playing');
+        document.getElementById('wbadge-play').classList.add('active');
+        document.getElementById('wbadge-stop').classList.remove('active');
+      });
+      widget.bind(SC.Widget.Events.PAUSE, function() {
+        isPlaying = false;
+        document.getElementById('winamp-viz').classList.remove('playing');
+        document.getElementById('wbadge-play').classList.remove('active');
+      });
+      widget.bind(SC.Widget.Events.PLAY_PROGRESS, function(e) {
+        const s = Math.floor(e.currentPosition / 1000);
+        document.getElementById('winamp-time').textContent =
+          Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+        document.getElementById('winamp-seekpos').style.width = (e.relativePosition * 100) + '%';
+      });
+      widget.bind(SC.Widget.Events.FINISH, function() {
+        loadTrack(currentTrack + 1, true);
+      });
+    }
+
+    // Load SC Widget API then initialise
+    const scApi = document.createElement('script');
+    scApi.src = 'https://w.soundcloud.com/player/api.js';
+    scApi.onload = function() { loadTrack(0, false); };
+    document.head.appendChild(scApi);
+
+    document.getElementById('wbtn-play').addEventListener('click', function() {
+      if (widget) widget.play();
+    });
+    document.getElementById('wbtn-pause').addEventListener('click', function() {
+      if (widget) widget.pause();
+    });
+    document.getElementById('wbtn-stop').addEventListener('click', function() {
+      if (widget) { widget.pause(); widget.seekTo(0); }
+      isPlaying = false;
+      document.getElementById('winamp-time').textContent = '0:00';
+      document.getElementById('winamp-seekpos').style.width = '0';
+      document.getElementById('winamp-viz').classList.remove('playing');
+      document.getElementById('wbadge-play').classList.remove('active');
+      document.getElementById('wbadge-stop').classList.add('active');
+    });
+    document.getElementById('wbtn-prev').addEventListener('click', function() {
+      loadTrack(currentTrack - 1, isPlaying);
+    });
+    document.getElementById('wbtn-next').addEventListener('click', function() {
+      loadTrack(currentTrack + 1, isPlaying);
+    });
+
+    document.getElementById('winamp-vol').addEventListener('input', function() {
+      if (widget) widget.setVolume(this.value);
+    });
+
+    document.getElementById('winamp-seekbar').addEventListener('click', function(e) {
+      if (!widget) return;
+      const ratio = (e.clientX - this.getBoundingClientRect().left) / this.offsetWidth;
+      widget.getDuration(function(dur) { widget.seekTo(dur * ratio); });
+    });
+
+    // Minimize
+    let minimized = false;
+    document.getElementById('winamp-min').addEventListener('click', function() {
+      minimized = !minimized;
+      document.getElementById('winamp-body').style.display = minimized ? 'none' : '';
+    });
+
+    // Close
+    document.getElementById('winamp-close-btn').addEventListener('click', function() {
+      document.getElementById('winamp').style.display = 'none';
+    });
+
+    // Drag
+    const win = document.getElementById('winamp');
+    const bar = document.getElementById('winamp-titlebar');
+    let dragging = false, ox = 0, oy = 0;
+    bar.addEventListener('mousedown', function(e) {
+      if (e.target.classList.contains('winamp-title-btn')) return;
+      dragging = true;
+      ox = e.clientX - win.getBoundingClientRect().left;
+      oy = e.clientY - win.getBoundingClientRect().top;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', function(e) {
+      if (!dragging) return;
+      win.style.left = (e.clientX - ox) + 'px';
+      win.style.top  = (e.clientY - oy) + 'px';
+      win.style.bottom = 'auto';
+    });
+    document.addEventListener('mouseup', function() { dragging = false; });
   })();
 
   // ===== FAKE POPUP ADS =====
