@@ -872,7 +872,7 @@
 </div>
 
 <!-- WINAMP PLAYER -->
-<div id="winamp">
+<div id="winamp" style="display:none">
   <div id="winamp-titlebar">
     <span class="winamp-logo">WINAMP</span>
     <div class="winamp-title-btns">
@@ -1171,6 +1171,7 @@
   setTimeout(() => {
     document.getElementById('boot-screen').style.display = 'none';
     document.getElementById('main').style.display = 'block';
+    document.getElementById('winamp').style.display = '';
 
     // Animate visitor counter — stays in sync with the hit counter
     let count = 0;
