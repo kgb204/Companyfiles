@@ -1167,7 +1167,7 @@
   let konamiPos = 0;
   document.addEventListener('keydown', e => {
     if (matrixActive) { stopMatrix(); return; }
-    if (e.key === konami[konamiPos]) {
+    if (e.key.toLowerCase() === konami[konamiPos]) {
       konamiPos++;
       if (konamiPos === konami.length) { konamiPos = 0; startMatrix(); }
     } else {
