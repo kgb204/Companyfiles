@@ -1087,6 +1087,43 @@
 <canvas id="matrix-canvas"></canvas>
 <div id="matrix-dismiss" onclick="stopMatrix()">[ PRESS ANY KEY OR CLICK TO EXIT ]</div>
 
+<!-- FLASH MISSING PLUGIN OVERLAY -->
+<div id="flash-overlay">
+  <div id="flash-box">
+    <div id="flash-titlebar">
+      <span>Adobe Flash Player</span>
+      <div id="flash-titlebar-btns">
+        <button class="flash-win-btn">_</button>
+        <button class="flash-win-btn">□</button>
+        <button class="flash-win-btn" id="flash-close">✕</button>
+      </div>
+    </div>
+    <div id="flash-plugin-area">
+      <div id="flash-puzzle">🧩</div>
+      <div id="flash-plugin-label">Missing Plug-in</div>
+      <div id="flash-plugin-file">KEN_BAUER_INTRO_2003.swf</div>
+    </div>
+    <div id="flash-message">
+      <p>To view this content, you need <strong>Adobe Flash Player</strong>.</p>
+      <p style="font-size:11px;color:#555;">
+        Flash Player version detected: <strong>0.0.0</strong><br>
+        Minimum required version: <strong>6.0.0</strong>
+      </p>
+      <div id="flash-adobe-badge">
+        <div id="flash-adobe-f">f</div>
+        <div id="flash-adobe-text">
+          Get Adobe<strong>FLASH PLAYER</strong>
+        </div>
+      </div>
+      <div id="flash-fine-print">Free download &bull; Windows / Mac / Linux &bull; www.adobe.com</div>
+    </div>
+    <div id="flash-footer-btns">
+      <button class="flash-btn" id="flash-ok">OK</button>
+      <button class="flash-btn" onclick="document.getElementById('flash-overlay').classList.remove('active')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- KEN FROM IT CHAT -->
 <div id="chat-widget">
   <div id="chat-body">
@@ -2090,41 +2127,5 @@
   })();
 </script>
 
-<!-- FLASH MISSING PLUGIN OVERLAY -->
-<div id="flash-overlay">
-  <div id="flash-box">
-    <div id="flash-titlebar">
-      <span>Adobe Flash Player</span>
-      <div id="flash-titlebar-btns">
-        <button class="flash-win-btn">_</button>
-        <button class="flash-win-btn">□</button>
-        <button class="flash-win-btn" id="flash-close">✕</button>
-      </div>
-    </div>
-    <div id="flash-plugin-area">
-      <div id="flash-puzzle">🧩</div>
-      <div id="flash-plugin-label">Missing Plug-in</div>
-      <div id="flash-plugin-file">KEN_BAUER_INTRO_2003.swf</div>
-    </div>
-    <div id="flash-message">
-      <p>To view this content, you need <strong>Adobe Flash Player</strong>.</p>
-      <p style="font-size:11px;color:#555;">
-        Flash Player version detected: <strong>0.0.0</strong><br>
-        Minimum required version: <strong>6.0.0</strong>
-      </p>
-      <div id="flash-adobe-badge">
-        <div id="flash-adobe-f">f</div>
-        <div id="flash-adobe-text">
-          Get Adobe<strong>FLASH PLAYER</strong>
-        </div>
-      </div>
-      <div id="flash-fine-print">Free download &bull; Windows / Mac / Linux &bull; www.adobe.com</div>
-    </div>
-    <div id="flash-footer-btns">
-      <button class="flash-btn" id="flash-ok">OK</button>
-      <button class="flash-btn" id="flash-close2" onclick="document.getElementById('flash-overlay').classList.remove('active')">Cancel</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
