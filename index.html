@@ -1580,37 +1580,30 @@
   }
 
   // ===== KEN FROM IT CHAT =====
-  const daveReplies = [
-    "Have you tried turning it off and on again?",
-    "That's not in my ticket queue. Please submit a ticket.",
-    "I'm looking into it. (Ken is not looking into it.)",
-    "Did you check if it's plugged in?",
-    "That's a known issue. It's on the roadmap. (The roadmap is a napkin.)",
-    "Please don't touch that. I said please.",
-    "The system is working as intended. The intention was unclear.",
-    "I'll escalate this to Tier 2. Tier 2 is also me.",
-    "Have you cleared your cookies? Clear ALL of them. Forever.",
-    "That's weird, it works on my machine.",
-    "I can remote in Thursday between 2 and 2:05 PM. Does that work?",
-    "I've reset your password to 'Password1'. Please change it to something secure like 'Password2'.",
-    "The cloud is just someone else's computer. I unplugged it. Sorry.",
-    "According to my logs, that error doesn't exist. So you're fine.",
-    "What is your ticket number? You do have a ticket number, right?",
-    "Please change your ticket status to 'In Progress'. I will then change it back to 'Open'.",
-    "I'm showing ticket #4521 as resolved. Was that not your issue? Please open a new ticket.",
-    "That ticket has been reassigned 7 times. It is now assigned to you.",
-    "Your ticket number is noted. It will be reviewed in the order it was received. Order: unclear.",
-  ];
+  const RAGE_API = 'https://kgb204-kgbragebot.vercel.app/api/chat';
+  const RAGE_SYSTEM = `You are RAGE BOT — an AI that responds exclusively in the aggressive, politically-charged, anti-corporate, anti-authoritarian style of revolutionary protest rap.
 
+Your rules:
+- Short, explosive lines. Punchy. Never corporate-speak.
+- Anti-establishment energy throughout.
+- Use ALL CAPS for key words or phrases for emphasis.
+- Reference themes like: systems of control, corporate greed, surveillance, power structures, the machine, waking up, resistance.
+- Be passionate, furious, poetic in a raw way.
+- Keep answers relatively concise — 4-10 punchy lines usually. More for complex topics.
+- Do NOT reproduce or quote actual Rage Against the Machine lyrics.
+- DO channel that energy completely.
+- End responses with one final short line that hits hard — like a closing lyric.`;
+
+  const rageHistory = [];
   let chatOpen = false;
-  let daveGreeted = false;
+  let kensGreeted = false;
 
   function toggleChat() {
     chatOpen = !chatOpen;
     document.getElementById('chat-body').classList.toggle('open', chatOpen);
     document.getElementById('chat-chevron').textContent = chatOpen ? '▼' : '▲';
-    if (chatOpen && !daveGreeted) {
-      daveGreeted = true;
+    if (chatOpen && !kensGreeted) {
+      kensGreeted = true;
       setTimeout(() => addChatMsg('dave', "Hi, this is Ken from IT. What is your ticket number? Or if you don't have one, what seems to be the issue? (Note: you will need a ticket number.) (Note: I am not approved to fix most issues.)"), 600);
     }
   }
@@ -1622,21 +1615,39 @@
     div.textContent = text;
     msgs.appendChild(div);
     msgs.scrollTop = msgs.scrollHeight;
+    return div;
   }
 
   document.getElementById('chat-send').addEventListener('click', sendChat);
   document.getElementById('chat-input').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
 
-  function sendChat() {
+  async function sendChat() {
     const input = document.getElementById('chat-input');
+    const btn = document.getElementById('chat-send');
     const text = input.value.trim();
     if (!text) return;
-    addChatMsg('user', text);
     input.value = '';
-    setTimeout(() => {
-      const reply = daveReplies[Math.floor(Math.random() * daveReplies.length)];
+    btn.disabled = true;
+    addChatMsg('user', text);
+    rageHistory.push({ role: 'user', content: text });
+    const thinking = addChatMsg('dave', '...');
+    try {
+      const res = await fetch(RAGE_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: rageHistory, system: RAGE_SYSTEM })
+      });
+      const data = await res.json();
+      const reply = data.content?.map(b => b.text).join('') || 'System error. Please submit a ticket.';
+      thinking.remove();
+      rageHistory.push({ role: 'assistant', content: reply });
       addChatMsg('dave', reply);
-    }, 800 + Math.random() * 800);
+    } catch(err) {
+      thinking.remove();
+      addChatMsg('dave', 'Connection error. Have you tried turning it off and on again?');
+    }
+    btn.disabled = false;
+    input.focus();
   }
 
   // ===== MATRIX RAIN =====
