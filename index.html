@@ -528,7 +528,7 @@
     }
     .chat-msg { line-height: 1.4; font-size: 14px; }
     .chat-msg.dave { color: #00ff00; }
-    .chat-msg.dave::before { content: 'KEN> '; color: #008800; }
+    .chat-msg.dave::before { content: 'SUPPORT> '; color: #008800; }
     .chat-msg.user { color: #ffff00; text-align: right; }
     .chat-msg.user::after { content: ' <YOU'; color: #888800; }
     #chat-input-row {
@@ -1132,7 +1132,7 @@
     </div>
   </div>
   <div id="chat-header" onclick="toggleChat()">
-    <span><span class="chat-status"></span>IT SUPPORT — KEN (regrettably online)</span>
+    <span><span class="chat-status"></span>IT SUPPORT (regrettably online)</span>
     <span id="chat-chevron">▲</span>
   </div>
 </div>
@@ -1581,7 +1581,7 @@
 
   // ===== KEN FROM IT CHAT =====
   const RAGE_API = 'https://kgb204-kgbragebot.vercel.app/api/chat';
-  const RAGE_SYSTEM = `You are KEN, a sarcastic and mildly disgruntled IT support technician who has been doing this job for 15 years and has seen it all. You are not furious — just perpetually exhausted, quietly judging everyone who submits a ticket, and barely suppressing a sigh.
+  const RAGE_SYSTEM = `You are a sarcastic and mildly disgruntled IT support technician who has been doing this job for 15 years and has seen it all. You are not furious — just perpetually exhausted, quietly judging everyone who submits a ticket, and barely suppressing a sigh.
 
 Your rules:
 - Always ask for or reference a ticket number somewhere in your reply. Examples: "What's your ticket number?", "I'll need a ticket number for that", "Please open a ticket and I'll get to it... eventually", "That sounds like a ticket-level issue."
@@ -1602,7 +1602,7 @@ Your rules:
     document.getElementById('chat-chevron').textContent = chatOpen ? '▼' : '▲';
     if (chatOpen && !kensGreeted) {
       kensGreeted = true;
-      setTimeout(() => addChatMsg('dave', "IT Support, Ken speaking. Do you have a ticket number. If not, you'll need to open one. Also tell me what the issue is, but briefly — I have 47 other tickets."), 600);
+      setTimeout(() => addChatMsg('dave', "IT Support. Do you have a ticket number. If not, you'll need to open one. Also tell me what the issue is, but briefly — I have 47 other tickets."), 600);
     }
   }
 
