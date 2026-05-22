@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>COMPANYFILES.ZIP — SECURE PORTAL</title>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -482,81 +482,120 @@
       animation: blink 2s step-start infinite;
     }
 
-    /* ===== KEN FROM IT CHAT ===== */
+    /* ===== RAGE BOT CHAT ===== */
     #chat-widget {
       position: fixed;
       bottom: 20px;
       right: 20px;
       width: 320px;
       z-index: 8000;
-      font-size: 15px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
     }
     #chat-header {
-      background: #002200;
-      border: 1px solid #00ff00;
+      background: #0a0a0a;
+      border: 2px solid #e60000;
       border-bottom: none;
       padding: 8px 14px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      letter-spacing: 1px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 3px;
+      color: #e60000;
     }
     #chat-header .chat-status {
-      width: 10px; height: 10px;
-      background: #00ff00;
-      border-radius: 50%;
+      width: 8px; height: 8px;
+      background: #e60000;
       display: inline-block;
       margin-right: 8px;
+      clip-path: polygon(0 10%, 10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%);
       animation: blink 1.5s step-start infinite;
     }
     #chat-body {
       display: none;
-      border: 1px solid #00ff00;
-      background: #000;
+      border: 2px solid #e60000;
+      border-top: none;
+      background: #0a0a0a;
       flex-direction: column;
     }
     #chat-body.open { display: flex; }
     #chat-messages {
-      height: 200px;
+      height: 260px;
       overflow-y: auto;
       padding: 10px;
-      background: #001100;
+      background: #0a0a0a;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
-    .chat-msg { line-height: 1.4; font-size: 14px; }
-    .chat-msg.dave { color: #00ff00; }
-    .chat-msg.dave::before { content: 'KEN> '; color: #008800; }
-    .chat-msg.user { color: #ffff00; text-align: right; }
-    .chat-msg.user::after { content: ' <YOU'; color: #888800; }
+    #chat-messages::-webkit-scrollbar { width: 3px; }
+    #chat-messages::-webkit-scrollbar-track { background: #111; }
+    #chat-messages::-webkit-scrollbar-thumb { background: #e60000; }
+    .chat-msg { display: flex; gap: 8px; animation: rageMsgIn 0.3s ease-out; }
+    .chat-msg.user { flex-direction: row-reverse; }
+    @keyframes rageMsgIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .chat-avatar {
+      width: 28px; height: 28px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 0.6rem;
+      letter-spacing: 1px; margin-top: 2px;
+    }
+    .chat-msg.bot .chat-avatar {
+      background: #e60000; color: #000;
+      clip-path: polygon(0 10%, 10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%);
+    }
+    .chat-msg.user .chat-avatar { background: #222; color: #f0ede8; border: 1px solid #444; }
+    .chat-bubble { max-width: 82%; padding: 8px 12px; line-height: 1.5; font-size: 0.8rem; }
+    .chat-msg.user .chat-bubble { background: #1e1e1e; border: 1px solid #333; color: #ccc; }
+    .chat-msg.bot .chat-bubble { background: #120000; border-left: 3px solid #e60000; color: #f0ede8; }
+    .chat-msg.bot .chat-bubble strong { color: #e60000; font-family: 'Bebas Neue', sans-serif; font-size: 1.05em; letter-spacing: 2px; }
+    .chat-thinking { display: flex; gap: 4px; align-items: center; padding: 8px 12px; background: #120000; border-left: 3px solid #e60000; }
+    .chat-thinking span { width: 6px; height: 6px; background: #e60000; display: inline-block; animation: ragePulse 0.8s infinite; }
+    .chat-thinking span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-thinking span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes ragePulse {
+      0%, 60%, 100% { opacity: 0.2; transform: scale(0.8); }
+      30% { opacity: 1; transform: scale(1.2); }
+    }
     #chat-input-row {
       display: flex;
-      border-top: 1px solid #004400;
+      border-top: 1px solid #300;
     }
     #chat-input {
       flex: 1;
-      background: #001100;
-      color: #00ff00;
+      background: #111;
+      color: #f0ede8;
       border: none;
-      font-family: inherit;
-      font-size: 14px;
-      padding: 6px 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      padding: 8px 10px;
       outline: none;
+      resize: none;
+      min-height: 38px;
+      max-height: 80px;
     }
+    #chat-input:focus { box-shadow: inset 0 0 6px rgba(230,0,0,0.15); }
+    #chat-input::placeholder { color: #444; }
     #chat-send {
-      background: #002200;
-      color: #00ff00;
+      background: #e60000;
+      color: #000;
       border: none;
-      border-left: 1px solid #004400;
-      font-family: inherit;
-      font-size: 14px;
-      padding: 6px 12px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      padding: 8px 12px;
       cursor: pointer;
-      letter-spacing: 1px;
+      transition: background 0.15s;
+      align-self: flex-end;
     }
-    #chat-send:hover { background: #004400; }
+    #chat-send:hover { background: #ff3300; }
+    #chat-send:disabled { background: #400; color: #700; cursor: not-allowed; }
 
     /* ===== MATRIX RAIN ===== */
     #matrix-canvas {
@@ -1122,17 +1161,17 @@
   </div>
 </div>
 
-<!-- KEN FROM IT CHAT -->
+<!-- RAGE BOT CHAT -->
 <div id="chat-widget">
   <div id="chat-body">
     <div id="chat-messages"></div>
     <div id="chat-input-row">
-      <input id="chat-input" type="text" placeholder="type your issue..." maxlength="100" autocomplete="off">
+      <textarea id="chat-input" placeholder="ask the machine..." rows="1"></textarea>
       <button id="chat-send">SEND</button>
     </div>
   </div>
   <div id="chat-header" onclick="toggleChat()">
-    <span><span class="chat-status"></span>IT SUPPORT — KEN (online)</span>
+    <span><span class="chat-status"></span>RAGE BOT</span>
     <span id="chat-chevron">▲</span>
   </div>
 </div>
@@ -1579,64 +1618,114 @@
     }, 220);
   }
 
-  // ===== KEN FROM IT CHAT =====
-  const daveReplies = [
-    "Have you tried turning it off and on again?",
-    "That's not in my ticket queue. Please submit a ticket.",
-    "I'm looking into it. (Ken is not looking into it.)",
-    "Did you check if it's plugged in?",
-    "That's a known issue. It's on the roadmap. (The roadmap is a napkin.)",
-    "Please don't touch that. I said please.",
-    "The system is working as intended. The intention was unclear.",
-    "I'll escalate this to Tier 2. Tier 2 is also me.",
-    "Have you cleared your cookies? Clear ALL of them. Forever.",
-    "That's weird, it works on my machine.",
-    "I can remote in Thursday between 2 and 2:05 PM. Does that work?",
-    "I've reset your password to 'Password1'. Please change it to something secure like 'Password2'.",
-    "I've reinstalled Windows. Not yours. Mine. I feel better though.",
-    "According to my logs, that error doesn't exist. So you're fine.",
-    "What is your ticket number? You do have a ticket number, right?",
-    "Please change your ticket status to 'In Progress'. I will then change it back to 'Open'.",
-    "I'm showing ticket #4521 as resolved. Was that not your issue? Please open a new ticket.",
-    "That ticket has been reassigned 7 times. It is now assigned to you.",
-    "Your ticket number is noted. It will be reviewed in the order it was received. Order: unclear.",
-  ];
+  // ===== RAGE BOT CHAT =====
+  const RAGE_API = 'https://kgb204.github.io/Ragebot/api/chat';
+  const RAGE_SYSTEM = `You are RAGE BOT — an AI that responds exclusively in the aggressive, politically-charged, anti-corporate, anti-authoritarian style of revolutionary protest rap.
 
+Your rules:
+- Short, explosive lines. Punchy. Never corporate-speak.
+- Anti-establishment energy throughout.
+- Use ALL CAPS for key words or phrases for emphasis.
+- Reference themes like: systems of control, corporate greed, surveillance, power structures, the machine, waking up, resistance.
+- Be passionate, furious, poetic in a raw way.
+- Keep answers relatively concise — 4-10 punchy lines usually. More for complex topics.
+- Do NOT reproduce or quote actual Rage Against the Machine lyrics.
+- DO channel that energy completely.
+- End responses with one final short line that hits hard — like a closing lyric.`;
+
+  const rageHistory = [];
   let chatOpen = false;
-  let daveGreeted = false;
+  let rageGreeted = false;
 
   function toggleChat() {
     chatOpen = !chatOpen;
     document.getElementById('chat-body').classList.toggle('open', chatOpen);
     document.getElementById('chat-chevron').textContent = chatOpen ? '▼' : '▲';
-    if (chatOpen && !daveGreeted) {
-      daveGreeted = true;
-      setTimeout(() => addChatMsg('dave', "Hi, this is Ken from IT. What is your ticket number? Or if you don't have one, what seems to be the issue? (Note: you will need a ticket number.) (Note: I am not approved to fix most issues.)"), 600);
+    if (chatOpen && !rageGreeted) {
+      rageGreeted = true;
+      setTimeout(() => addRageMsg('bot', 'WAKE UP.\n\nI am **RAGE BOT** — wired to the grid they built to chain you.\n\nAsk me anything. I answer in **RAGE**.'), 400);
     }
   }
 
-  function addChatMsg(who, text) {
-    const msgs = document.getElementById('chat-messages');
-    const div = document.createElement('div');
-    div.className = 'chat-msg ' + who;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
+  function escapeRage(str) {
+    return str
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  document.getElementById('chat-send').addEventListener('click', sendChat);
-  document.getElementById('chat-input').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
+  function addRageMsg(role, text) {
+    const msgs = document.getElementById('chat-messages');
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg ' + role;
+    const avatar = document.createElement('div');
+    avatar.className = 'chat-avatar';
+    avatar.textContent = role === 'bot' ? 'RB' : 'YOU';
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble';
+    bubble.innerHTML = escapeRage(text)
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    msg.appendChild(avatar);
+    msg.appendChild(bubble);
+    msgs.appendChild(msg);
+    msgs.scrollTop = msgs.scrollHeight;
+    return msg;
+  }
 
-  function sendChat() {
+  function addRageThinking() {
+    const msgs = document.getElementById('chat-messages');
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg bot';
+    const avatar = document.createElement('div');
+    avatar.className = 'chat-avatar';
+    avatar.textContent = 'RB';
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-thinking';
+    bubble.innerHTML = '<span></span><span></span><span></span>';
+    msg.appendChild(avatar);
+    msg.appendChild(bubble);
+    msgs.appendChild(msg);
+    msgs.scrollTop = msgs.scrollHeight;
+    return msg;
+  }
+
+  document.getElementById('chat-send').addEventListener('click', sendRage);
+  document.getElementById('chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendRage(); }
+  });
+  document.getElementById('chat-input').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+  });
+
+  async function sendRage() {
     const input = document.getElementById('chat-input');
+    const btn = document.getElementById('chat-send');
     const text = input.value.trim();
     if (!text) return;
-    addChatMsg('user', text);
     input.value = '';
-    setTimeout(() => {
-      const reply = daveReplies[Math.floor(Math.random() * daveReplies.length)];
-      addChatMsg('dave', reply);
-    }, 800 + Math.random() * 800);
+    input.style.height = 'auto';
+    btn.disabled = true;
+    addRageMsg('user', text);
+    rageHistory.push({ role: 'user', content: text });
+    const thinking = addRageThinking();
+    try {
+      const res = await fetch(RAGE_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: rageHistory, system: RAGE_SYSTEM })
+      });
+      const data = await res.json();
+      const reply = data.content?.map(b => b.text).join('') || 'THE SIGNAL IS JAMMED. TRY AGAIN.';
+      thinking.remove();
+      rageHistory.push({ role: 'assistant', content: reply });
+      addRageMsg('bot', reply);
+    } catch(err) {
+      thinking.remove();
+      addRageMsg('bot', 'THE MACHINE BROKE THE CONNECTION.\n\nOf course it did.');
+    }
+    btn.disabled = false;
+    input.focus();
   }
 
   // ===== MATRIX RAIN =====
